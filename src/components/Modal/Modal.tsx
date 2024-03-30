@@ -7,7 +7,7 @@ const Modal: React.FC<ModalProps> = ({ targetDate, setIsOpen }) => {
     <div className="fixed w-full h-screen flex flex-col justify-center items-center bg-black/75">
       <div className="bg-slate-50 p-4 rounded-xl shadow-md">
         <DateTimePicker
-          label="Controlled picker"
+          label="Reunion time picker"
           onChange={(newValue) => (targetDate.current = newValue)}
         />
         <button className="h-full" onClick={() => setIsOpen(false)}>

@@ -33,10 +33,10 @@ const App: React.FC = () => {
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center font-primary bg-penguins bg-center bg-no-repeat bg-cover">
-      <h1 className="font-secondary text-4xl lg:text-[3rem]">
+      <h1 className="font-secondary text-[1.7rem] lg:text-[3rem]">
         Untill Penguins Reunite
       </h1>
-      <div className="flex justify-around w-5/6 my-12 lg:w-[36rem]">
+      <div className="flex justify-around w-11/12 my-12 lg:w-[36rem]">
         <Card time={days} unit="Days" />
         <Card time={hours} unit="Hours" />
         <Card time={minutes} unit="Minutes" />
@@ -44,7 +44,7 @@ const App: React.FC = () => {
       </div>
       <button
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-[#9595D2] rounded-xl shadow-md"
+        className="px-4 py-2 bg-[#9595D2] rounded-xl shadow-md text-sm"
       >
         Change the Reunion Date
       </button>
