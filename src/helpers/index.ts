@@ -1,3 +1,9 @@
-import { countDays, countHours, countMinutes, countSeconds } from "./helpers";
+import {
+  countDays,
+  countHours,
+  countMinutes,
+  countSeconds,
+  calcDiff,
+} from "./helpers";
 
-export { countDays, countHours, countMinutes, countSeconds };
+export { countDays, countHours, countMinutes, countSeconds, calcDiff };

@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { countDays, countHours, countMinutes, countSeconds } from "./helpers";
+import {
+  calcDiff,
+  countDays,
+  countHours,
+  countMinutes,
+  countSeconds,
+} from "./helpers";
 import { Card, Modal } from "./components";
 import dayjs, { Dayjs } from "dayjs";
 import { getAvailableDate } from "./helpers/firebase";
@@ -18,8 +24,7 @@ const App: React.FC = () => {
     if (!dates.length) return;
     targetDate.current = dayjs(dates[0].date);
     if (!targetDate.current) return;
-    const difference =
-      targetDate.current.toDate().getTime() - new Date().getTime();
+    const difference = calcDiff(targetDate.current);
     if (difference > 0) {
       setDays(countDays(difference));
       setHours(countHours(difference));
@@ -37,12 +42,14 @@ const App: React.FC = () => {
   }, [calculateTimeLeft]);
 
   return (
-    <div className="w-full h-screen flex flex-col justify-center items-center font-primary bg-penguins bg-center bg-no-repeat bg-cover">
+    <div
+      className={`w-full h-screen flex flex-col justify-center items-center font-primary bg-[url(./assets/penguins.svg)] bg-center bg-no-repeat bg-cover`}
+    >
+      <h1 className="font-secondary text-[1.7rem] lg:text-[3rem]">
+        Untill Penguins Reunite
+      </h1>
       {targetDate.current?.toDate().getDay() ? (
-        <>
-          <h1 className="font-secondary text-[1.7rem] lg:text-[3rem]">
-            Untill Penguins Reunite
-          </h1>
+        <div className="animate-fade-in flex flex-col">
           <div className="flex justify-around w-11/12 my-12 lg:w-[36rem]">
             <Card time={days} unit="Days" />
             <Card time={hours} unit="Hours" />
@@ -55,9 +62,9 @@ const App: React.FC = () => {
           >
             Change the Reunion Date
           </button>
-        </>
+        </div>
       ) : (
-        <CircularProgress />
+        <CircularProgress className="my-[4.4rem]" />
       )}
 
       {isOpen && <Modal targetDate={targetDate} setIsOpen={setIsOpen} />}
