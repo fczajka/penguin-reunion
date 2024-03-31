@@ -8,8 +8,9 @@ import {
 } from "./helpers";
 import { Card, Modal } from "./components";
 import dayjs, { Dayjs } from "dayjs";
-import { getAvailableDate } from "./helpers/firebase";
+import { getReunionDate } from "./helpers/firebase";
 import { CircularProgress } from "@mui/material";
+import { Button } from "./components/Button";
 
 const App: React.FC = () => {
   const targetDate = useRef<Dayjs | null>(dayjs(null));
@@ -19,10 +20,12 @@ const App: React.FC = () => {
   const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
 
-  const calculateTimeLeft = useCallback(async () => {
-    const dates = await getAvailableDate();
-    if (!dates.length) return;
+  const checkReunionDate = async () => {
+    const dates = await getReunionDate();
     targetDate.current = dayjs(dates[0].date);
+  };
+
+  const calculateTimeLeft = useCallback(async () => {
     if (!targetDate.current) return;
     const difference = calcDiff(targetDate.current);
     if (difference > 0) {
@@ -32,6 +35,10 @@ const App: React.FC = () => {
       setSeconds(countSeconds(difference));
     }
   }, [targetDate]);
+
+  useEffect(() => {
+    checkReunionDate();
+  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -56,17 +63,15 @@ const App: React.FC = () => {
             <Card time={minutes} unit="Minutes" />
             <Card time={seconds} unit="Seconds" />
           </div>
-          <button
-            onClick={() => setIsOpen(true)}
-            className="px-4 py-2 bg-[#9595D2] rounded-xl shadow-md text-sm"
-          >
-            Change the Reunion Date
-          </button>
+          <Button
+            callback={() => setIsOpen(true)}
+            style="px-4 py-2 bg-[#9595D2] rounded-xl shadow-md text-sm"
+            children="Change the Reunion Date"
+          ></Button>
         </div>
       ) : (
         <CircularProgress className="my-[4.4rem]" />
       )}
-
       {isOpen && <Modal targetDate={targetDate} setIsOpen={setIsOpen} />}
     </div>
   );

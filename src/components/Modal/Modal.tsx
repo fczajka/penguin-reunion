@@ -4,6 +4,7 @@ import { ModalProps } from "./interface";
 import { updateDate } from "../../helpers/firebase";
 import { useState } from "react";
 import { sleep } from "../../helpers/helpers";
+import { Button } from "../Button";
 
 const Modal: React.FC<ModalProps> = ({ targetDate, setIsOpen }) => {
   const [wantsToClose, setWantsToClose] = useState<boolean>(false);
@@ -12,7 +13,7 @@ const Modal: React.FC<ModalProps> = ({ targetDate, setIsOpen }) => {
       className={`fixed w-full h-screen flex flex-col justify-center items-center bg-black/75 ${wantsToClose ? "animate-fade-out" : "animate-fade-in"}`}
     >
       <div
-        className={`bg-slate-50 p-4 rounded-xl shadow-md ${wantsToClose ? "animate-fade-out-slide-down" : "animate-fade-in-slide-up delay-150"}`}
+        className={`bg-slate-50 p-4 rounded-xl shadow-md ${wantsToClose ? "animate-fade-out-slide-down" : "animate-fade-in-slide-up"}`}
       >
         <DateTimePicker
           label="Reunion time picker"
@@ -22,16 +23,15 @@ const Modal: React.FC<ModalProps> = ({ targetDate, setIsOpen }) => {
             updateDate(newValue.toString());
           }}
         />
-        <button
-          className="h-full"
-          onClick={async () => {
+        <Button
+          style="h-full"
+          callback={async () => {
             setWantsToClose(true);
-            await sleep(300);
+            await sleep(450);
             setIsOpen(false);
           }}
-        >
-          <MdOutlineClose className="text-3xl ml-2" />
-        </button>
+          children={<MdOutlineClose className="text-3xl ml-2" />}
+        />
       </div>
     </div>
   );

@@ -39,7 +39,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const firestoreDb = getFirestore(app);
 
-export const getAvailableDate = async () => {
+export const getReunionDate = async () => {
   const dates = collection(firestoreDb, "penguins-reunion");
   const snapshot = (await getDocs(dates)).docs.map((doc) => doc.data());
   return snapshot;
