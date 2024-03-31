@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { countDays, countHours, countMinutes, countSeconds } from "./helpers";
 import { Card, Modal } from "./components";
 import dayjs, { Dayjs } from "dayjs";
+import { getAvailableDate } from "./helpers/firebase";
+import { CircularProgress } from "@mui/material";
 
 const App: React.FC = () => {
   const targetDate = useRef<Dayjs | null>(dayjs(null));
@@ -11,7 +13,10 @@ const App: React.FC = () => {
   const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
 
-  const calculateTimeLeft = useCallback(() => {
+  const calculateTimeLeft = useCallback(async () => {
+    const dates = await getAvailableDate();
+    if (!dates.length) return;
+    targetDate.current = dayjs(dates[0].date);
     if (!targetDate.current) return;
     const difference =
       targetDate.current.toDate().getTime() - new Date().getTime();
@@ -33,21 +38,28 @@ const App: React.FC = () => {
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center font-primary bg-penguins bg-center bg-no-repeat bg-cover">
-      <h1 className="font-secondary text-[1.7rem] lg:text-[3rem]">
-        Untill Penguins Reunite
-      </h1>
-      <div className="flex justify-around w-11/12 my-12 lg:w-[36rem]">
-        <Card time={days} unit="Days" />
-        <Card time={hours} unit="Hours" />
-        <Card time={minutes} unit="Minutes" />
-        <Card time={seconds} unit="Seconds" />
-      </div>
-      <button
-        onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-[#9595D2] rounded-xl shadow-md text-sm"
-      >
-        Change the Reunion Date
-      </button>
+      {targetDate.current?.toDate().getDay() ? (
+        <>
+          <h1 className="font-secondary text-[1.7rem] lg:text-[3rem]">
+            Untill Penguins Reunite
+          </h1>
+          <div className="flex justify-around w-11/12 my-12 lg:w-[36rem]">
+            <Card time={days} unit="Days" />
+            <Card time={hours} unit="Hours" />
+            <Card time={minutes} unit="Minutes" />
+            <Card time={seconds} unit="Seconds" />
+          </div>
+          <button
+            onClick={() => setIsOpen(true)}
+            className="px-4 py-2 bg-[#9595D2] rounded-xl shadow-md text-sm"
+          >
+            Change the Reunion Date
+          </button>
+        </>
+      ) : (
+        <CircularProgress />
+      )}
+
       {isOpen && <Modal targetDate={targetDate} setIsOpen={setIsOpen} />}
     </div>
   );
