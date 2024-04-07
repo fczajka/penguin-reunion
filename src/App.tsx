@@ -63,15 +63,15 @@ const App: React.FC = () => {
             <Card time={minutes} unit="Minutes" />
             <Card time={seconds} unit="Seconds" />
           </div>
-          <Button
-            callback={() => setIsOpen(true)}
-            style="px-4 py-2 bg-[#9595D2] rounded-xl shadow-md text-sm"
-            children="Change the Reunion Date"
-          ></Button>
         </div>
       ) : (
         <CircularProgress className="my-[4.4rem]" />
       )}
+      <Button
+        callback={() => setIsOpen(true)}
+        style="px-4 py-2 bg-[#9595D2] rounded-xl shadow-md text-sm"
+        children="Change the Reunion Date"
+      ></Button>
       {isOpen && <Modal targetDate={targetDate} setIsOpen={setIsOpen} />}
     </div>
   );
